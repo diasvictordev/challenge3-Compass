@@ -25,6 +25,9 @@ public class Post {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "body")
+    private String body;
+
     @OneToMany(mappedBy = "comments")
     private List<Comment> comments = new ArrayList<>();
 
