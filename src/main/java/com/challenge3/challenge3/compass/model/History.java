@@ -23,11 +23,15 @@ public class History {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "date")
+    @Column(name = "create_date")
     @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
-    private LocalDate date;
+    private LocalDate createDate;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private PostStatusEnum status;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

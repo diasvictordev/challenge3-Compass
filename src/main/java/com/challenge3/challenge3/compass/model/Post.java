@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +30,15 @@ public class Post {
     @Column(name = "body")
     private String body;
 
-    @OneToMany(mappedBy = "comments")
+    @Column(name = "process_date")
+    @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
+    private LocalDate processDate;
+
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "history")
+    @OneToMany(mappedBy = "post")
     private List<History> history = new ArrayList<>();
+
 
 }
