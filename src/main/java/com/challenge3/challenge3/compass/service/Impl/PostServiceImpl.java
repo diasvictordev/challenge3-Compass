@@ -10,49 +10,59 @@ import com.challenge3.challenge3.compass.service.exceptions.RegraNegocioExceptio
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
 
+
     private PostRepository postRepository;
+
     private PostClient postClient;
+
 
     public PostServiceImpl (PostRepository postRepository, PostClient postClient){
         this.postRepository = postRepository;
         this.postClient = postClient;
     }
 
-
-
     @Override
-    public Post createPost(Post post){
-        validatePost(post);
-        History history = new History();
-        history.setStatus(PostStatusEnum.CREATED);
-        history.setCreateDate(LocalDate.now());
-        post.getHistory().add(history);
-        return postRepository.save(post);
+    public Post createPost(Long id) {
+        validatePostId(id);
+        Post postToCreate = postClient.getPostbyId(id);
+        postToCreate.setProcessDate(LocalDate.now());
+        return postRepository.save(postToCreate);
+
     }
 
     @Override
-    public Optional<Post> findPost(Post post, History history){
-        Optional<Post> postFound = postClient.getPostbyId(post.getId());
-        history.setStatus(PostStatusEnum.POST_FIND);
-        if (postFound.isPresent()) {
-            history.setStatus(PostStatusEnum.POST_OK);
+    public Post findPost(Long id) {
+        Post postFound = postClient.getPostbyId(id);
+        if (postFound != null) {
             return postFound;
         } else {
-            history.setStatus(PostStatusEnum.FAILED);
             throw new RegraNegocioException("Post não encontrado. Tente novamente!");
         }
     }
 
     @Override
-    public void validatePost(Post post){
-        if (post.getId() < 1 || post.getId() > 100 || post.getId() == null){
-            throw new RegraNegocioException("Informe um id entre 1 e 100!");
+    public void validatePostId(Long id) {
+        if (id == null || id < 1 || id > 100) {
+            throw new RegraNegocioException("Informe um ID entre 1 e 100!");
         }
+    }
+
+    @Override
+    public Post getPostsById(Long id) {
+        validatePostId(id);
+        return postClient.getPostbyId(id);
+    }
+
+    @Override
+    public List<Post> getAllPosts(){
+        return postRepository.findAll();
     }
 
 

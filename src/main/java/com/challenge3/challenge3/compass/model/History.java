@@ -19,8 +19,8 @@ import java.time.LocalDate;
 public class History {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "create_date")
@@ -32,6 +32,6 @@ public class History {
     private PostStatusEnum status;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post")
     private Post post;
 }
