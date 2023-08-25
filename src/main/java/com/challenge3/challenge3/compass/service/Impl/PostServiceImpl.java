@@ -1,6 +1,7 @@
 package com.challenge3.challenge3.compass.service.Impl;
 
 import com.challenge3.challenge3.compass.client.PostClient;
+import com.challenge3.challenge3.compass.model.Comment;
 import com.challenge3.challenge3.compass.model.History;
 import com.challenge3.challenge3.compass.model.Post;
 import com.challenge3.challenge3.compass.model.enums.PostStatusEnum;
@@ -10,9 +11,7 @@ import com.challenge3.challenge3.compass.service.exceptions.RegraNegocioExceptio
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -21,6 +20,7 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     private PostClient postClient;
+
 
 
     public PostServiceImpl (PostRepository postRepository, PostClient postClient){
@@ -33,19 +33,25 @@ public class PostServiceImpl implements PostService {
         validatePostId(id);
         Post postToCreate = postClient.getPostbyId(id);
         postToCreate.setProcessDate(LocalDate.now());
+        History history = new History();
+        history.setCreateDate(LocalDate.now());
+        history.setStatus(PostStatusEnum.CREATED);
+        postToCreate.getHistory().add(history);
         return postRepository.save(postToCreate);
-
     }
 
     @Override
-    public Post findPost(Long id) {
-        Post postFound = postClient.getPostbyId(id);
-        if (postFound != null) {
-            return postFound;
-        } else {
+    public Post findPost(Long id, Post postCreated) {
+        if (postCreated == null) {
             throw new RegraNegocioException("Post não encontrado. Tente novamente!");
         }
+        // Corrigir
+        History history = postCreated.getHistory().get(2);
+        history.setStatus(PostStatusEnum.POST_FIND);
+        postCreated.getHistory().add(history);
+        return postRepository.save(postCreated);
     }
+
 
     @Override
     public void validatePostId(Long id) {
@@ -59,6 +65,7 @@ public class PostServiceImpl implements PostService {
         validatePostId(id);
         return postClient.getPostbyId(id);
     }
+
 
     @Override
     public List<Post> getAllPosts(){

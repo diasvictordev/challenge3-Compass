@@ -7,10 +7,9 @@ import java.util.List;
 
 public interface PostService{
 
-
     Post createPost(Long id);
 
-    Post findPost(Long id);
+    Post findPost(Long id, Post postCreated);
 
     void validatePostId(Long id);
 

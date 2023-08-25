@@ -22,11 +22,9 @@ public class PostController {
 
     private PostServiceImpl postService;
 
-    private CommentServiceImpl commentService;
-
-    public PostController(PostServiceImpl postService, CommentServiceImpl commentService){
+    public PostController(PostServiceImpl postService){
         this.postService = postService;
-        this.commentService = commentService;
+
     }
 
     @GetMapping
@@ -45,8 +43,10 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id){
        try{
-        Post posts = postService.getPostsById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(posts);}
+        Post post = postService.createPost(id);
+        Post postFinded = postService.findPost(post.getId(), post);
+
+        return ResponseEntity.status(HttpStatus.OK).body(postFinded);}
        catch(RegraNegocioException e){
            return ResponseEntity.badRequest().body(e.getMessage());
        }

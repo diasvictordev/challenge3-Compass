@@ -33,18 +33,10 @@ public class Post{
     @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
     private LocalDate processDate;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<History> history = new ArrayList<>();
-
-    public List<History> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<History> history) {
-        this.history = history;
-    }
 
 }
