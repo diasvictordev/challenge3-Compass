@@ -9,6 +9,9 @@ import com.challenge3.challenge3.compass.repository.CommentRepository;
 import com.challenge3.challenge3.compass.repository.PostRepository;
 import com.challenge3.challenge3.compass.service.PostService;
 import com.challenge3.challenge3.compass.service.exceptions.RegraNegocioException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -203,9 +206,11 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<Post> getAllPosts(){
-
-        return postRepository.findAll();
+    public List<Post> getAllPosts(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Post> posts = postRepository.findAll(pageable);
+        List<Post> postList = posts.getContent();
+        return postList;
     }
 
 

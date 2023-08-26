@@ -28,9 +28,10 @@ public interface PostService{
 
     void validatePostId(Long id);
 
+
     Optional<Post> getPostsById(Long id);
 
-    List<Post> getAllPosts();
+    List<Post> getAllPosts(int pageNo, int pageSize);
 
     Post setCommentsIntoPostAndValidate(Long id);
 

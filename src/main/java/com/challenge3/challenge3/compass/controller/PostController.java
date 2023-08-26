@@ -32,8 +32,10 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllPosts(){
-        List<Post> posts = postService.getAllPosts();
+    public ResponseEntity<?> getAllPosts
+            (@RequestParam (value = "pageNo", defaultValue = "0", required = false) int pageNo,
+    @RequestParam(value = "pageSize", defaultValue = "10", required = false)int pageSize){
+        List<Post> posts = postService.getAllPosts(pageNo, pageSize);
         ErrorResponse errorResponse = new ErrorResponse("Nenhum post encontrado!"
                 , new Timestamp(System.currentTimeMillis()),HttpStatus.NOT_FOUND.name());
         if(posts.isEmpty()){
