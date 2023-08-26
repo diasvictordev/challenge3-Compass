@@ -23,9 +23,9 @@ public class History {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "create_date")
+    @Column(name = "process_date")
     @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
-    private LocalDate createDate;
+    private LocalDate processDate;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

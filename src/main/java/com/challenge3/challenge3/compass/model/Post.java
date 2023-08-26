@@ -29,11 +29,14 @@ public class Post{
     @Column(name = "body")
     private String body;
 
-    @Column(name = "process_date")
+    @Column(name = "create_date")
     @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
-    private LocalDate processDate;
+    private LocalDate createDate;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @Column(name = "reprocessed")
+    private boolean reprocessed;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)

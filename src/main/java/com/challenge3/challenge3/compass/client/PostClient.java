@@ -17,5 +17,5 @@ public interface PostClient {
     Post getPostbyId(@PathVariable("id") Long id);
 
     @GetMapping(value = "/{id}/comments")
-    Comment getCommentbyId(@PathVariable("id") Long id);
+    List<Comment> getCommentbyId(@PathVariable("id") Long id);
 }
