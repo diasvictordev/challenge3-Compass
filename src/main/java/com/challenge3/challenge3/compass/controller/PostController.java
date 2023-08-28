@@ -74,7 +74,7 @@ public class PostController {
                     switch (status) {
                         case CREATED:
                             postService.findPost(id);
-                            return ResponseEntity.status(HttpStatus.CREATED).body(post);
+                            return ResponseEntity.status(HttpStatus.OK).body(post);
                         case POST_FIND:
                             postService.validatePostFound(id);
                             return ResponseEntity.status(HttpStatus.OK).body(post);
@@ -105,7 +105,7 @@ public class PostController {
                 }
             }
             Post postCreated = postService.createPost(id);
-            return ResponseEntity.status(HttpStatus.OK).body(postCreated);
+            return ResponseEntity.status(HttpStatus.CREATED).body(postCreated);
         }
         catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
